@@ -27,17 +27,17 @@ def floyd_warshall(dim, conexoes):
     return dist
 
 
-def farness(aresta, distancias):
-    return sum(distancias[aresta])
+def farness(vertice, distancias):
+    return sum(distancias[vertice])
 
 
-def closeness(aresta, distancias):
-    return 1/farness(aresta, distancias)
+def closeness(vertice, distancias):
+    return 1/farness(vertice, distancias)
 
 
 def rank_close(proximidades):
-    '''Recebe um dict com cuja chave é a aresta, e o valor é o closeness
-        Retorna a lista de arestas organizada por closeness
+    '''Recebe um dict com cuja chave é o vertice, e o valor é o closeness
+        Retorna a lista de vertices organizada por closeness
     '''
     return [l for l, _ in sorted(proximidades.items(), key=itemgetter(1), reverse=True)]
     
@@ -46,17 +46,17 @@ if __name__ == '__main__':
     f = open('edges.dat', 'r')
 
     conexoes = []
-    maximo_local = 0
+    tamanho_da_rede = 0
     for linha in f.readlines():                   
         i, j = linha.replace('\n','').split(' ')
         conexoes.append((int(i), int(j)))
-        maximo_local = max(int(i), int(j),maximo_local)
+        tamanho_da_rede = max(int(i), int(j),tamanho_da_rede)
         
         
-    dist = floyd_warshall(maximo_local, conexoes)
+    dist = floyd_warshall(tamanho_da_rede, conexoes)
 
     proximidades = {}
-    for i in range(maximo_local+1):
+    for i in range(tamanho_da_rede+1):
         proximidades[i] = closeness(i, dist)
 
     _ = [print('Closeness do nó {}:\t{:03f}'.format(l, k)) 
