@@ -2,8 +2,6 @@ import numpy as np
 from numpy import ones, inf
 from operator import itemgetter
 
-np.set_printoptions(precision=0)
-
 
 def floyd_warshall(dim, conexoes):
     
