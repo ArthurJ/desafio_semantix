@@ -16,7 +16,7 @@ def floyd_warshall(dim, conexoes):
         dist[i, j] = 1
         dist[j, i] = 1
     
-    grafo = dist
+    grafo = np.array(dist)
 
     for i in range(dim):
         for j in range(dim):
@@ -24,6 +24,7 @@ def floyd_warshall(dim, conexoes):
                 continue
             for k in range(dim):
                 dist[i, j] = min(dist[i, j], dist[i, k] + dist[k, j])
+                dist[j, i] = min(dist[j, i], dist[j, k] + dist[k, i])
 
     return dist, grafo
 
