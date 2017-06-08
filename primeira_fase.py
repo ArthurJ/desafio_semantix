@@ -14,6 +14,9 @@ def floyd_warshall(dim, conexoes):
 
     for i, j in conexoes:
         dist[i, j] = 1
+        dist[j, i] = 1
+    
+    grafo = dist
 
     for i in range(dim):
         for j in range(dim):
@@ -22,7 +25,7 @@ def floyd_warshall(dim, conexoes):
             for k in range(dim):
                 dist[i, j] = min(dist[i, j], dist[i, k] + dist[k, j])
 
-    return dist
+    return dist, grafo
 
 
 def farness(vertice, distancias):
@@ -51,7 +54,7 @@ if __name__ == '__main__':
         tamanho_da_rede = max(int(i), int(j),tamanho_da_rede)
         
         
-    dist = floyd_warshall(tamanho_da_rede, conexoes)
+    dist, grafo = floyd_warshall(tamanho_da_rede, conexoes)
 
     proximidades = {}
     for i in range(tamanho_da_rede+1):
