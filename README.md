@@ -1,2 +1,2 @@
-# desafio_semantix
-Source code criado para o desafio semantix
+# Desafio Smx
+Source code criado para o desafio Semantix
