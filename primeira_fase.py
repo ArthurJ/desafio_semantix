@@ -4,18 +4,18 @@ from operator import itemgetter
 
 
 def floyd_warshall(dim, conexoes):
-    
+
     dim+=1
     dist = ones([dim, dim], dtype=np.int)
     dist = inf*dist
-    
+
     for i in range(dim):
         dist[i, i] = 0
 
     for i, j in conexoes:
         dist[i, j] = 1
-        dist[j, i] = 1
-    
+        dist[j, i] = 1 # Só para ligações bidirecionais
+
     grafo = np.array(dist)
 
     for i in range(dim):
@@ -24,7 +24,7 @@ def floyd_warshall(dim, conexoes):
                 continue
             for k in range(dim):
                 dist[i, j] = min(dist[i, j], dist[i, k] + dist[k, j])
-                dist[j, i] = min(dist[j, i], dist[j, k] + dist[k, i])
+                dist[j, i] = dist[i, j]  # Só para ligações bidirecionais
 
     return dist, grafo
 
@@ -42,24 +42,24 @@ def rank_close(proximidades):
         Retorna a lista de vertices organizada por closeness
     '''
     return [l for l, _ in sorted(proximidades.items(), key=itemgetter(1), reverse=True)]
-    
+
 
 if __name__ == '__main__':
     f = open('edges.dat', 'r')
 
     conexoes = []
     tamanho_da_rede = 0
-    for linha in f.readlines():                   
+    for linha in f.readlines():
         i, j = linha.replace('\n','').split(' ')
         conexoes.append((int(i), int(j)))
         tamanho_da_rede = max(int(i), int(j),tamanho_da_rede)
-        
-        
+
+
     dist, grafo = floyd_warshall(tamanho_da_rede, conexoes)
 
     proximidades = {}
     for i in range(tamanho_da_rede+1):
         proximidades[i] = closeness(i, dist)
 
-    _ = [print('Closeness do nó {}:\t{:03f}'.format(l, k)) 
+    _ = [print('Closeness do nó {}:\t{:03f}'.format(l, k))
             for l, k in sorted(proximidades.items(), key=itemgetter(1), reverse=True)]
